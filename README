@@ -1,0 +1,21 @@
+LICENSE - whatever. it's not good enough code to need one of those fangled licenses.
+
+TODO:
+
+X add support for '^' operator, aka "x ^ y" , "x to the power of y"
+
+X store last result to tmp var
+
+* add a switch that puts output in Hexadecimal or Binary, this way I can
+	instantly see what 49714 is in hex.
+
+	Answer: it's 0b1100001000110010 && 0xC232
+
+	I added support for -H & -B switches.  There is a catch, the program
+	dies when you write a - symbol in front of a number.
+
+* add support for multiple argument calculations: $ ftc "2 + 3 * 4"
+
+* add support for parentheses: $ ftc "(2 + 3) * 4"
+
+* re-write all the sketchy parts (there are many)
