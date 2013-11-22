@@ -58,7 +58,7 @@ void saveArgi( int i ) {
 
 /*
 void saveArgf( float f ) {
-    FILE *fp = fopen("/tmp/.ftc_last_result", "wb+");
+    FILE *fp = fopen("/tmp/.ftc_last_result", "w+");
     if ( !fp )
         return;
     fprintf( fp, "%f", f );
@@ -66,7 +66,7 @@ void saveArgf( float f ) {
 }
 
 void saveArgi( int i ) {
-    FILE *fp = fopen("/tmp/.ftc_last_result", "wb+");
+    FILE *fp = fopen("/tmp/.ftc_last_result", "w+");
     if ( !fp )
         return;
     fprintf( fp, "%i", i );
@@ -113,7 +113,7 @@ int checkStoredResult( char *str, char *tok ) {
     char *e;
     int n, i;
     
-    FILE *fp = fopen( "/tmp/.ftc_last_result", "rb" );
+    FILE *fp = fopen( "/tmp/.ftc_last_result", "r" );
     if ( !fp )
         return 0;
 
@@ -125,11 +125,16 @@ int checkStoredResult( char *str, char *tok ) {
 	}
     
     strncpy( buf, str, 1024);	// copy rest of str to buf
-    strncpy( str, tok, 256 );	// copy current tok back into str
-    strncpy( tok, res, 256 );   // strncpy pads end of tok w/ \0\0\0...
+printf( "buf: %s, str: %s\n", buf, str );
+    strncpy( str, tok, 256 );	// copy current tok back over str
+printf( "str: %s, tok: %s\n", str, tok );
+    strncpy( tok, res, 128 );   // strncpy pads end of tok w/ \0\0\0...
+printf( "tok: %s, res: %s\n", tok, res );
     e = getend( str, 256 );
+    n = (int)(e - str);
     *e++ = ' ';
-    strncpy( e, buf, 256 );	// put old str bck on end
+    //strncpy( e, buf, (int)(e-str) );	// put old str bck on end
+    strcpy( e, buf );	// put old str bck on end
     return 1;
 }
 
@@ -348,11 +353,16 @@ int main (int argc, char *argv[])
 
     // first argument
     clipLeadingWord(string, token);
+
     if ( isOperator(token) ) {
+printf( "isOperator, string: %s, token: %s \n", string, token );
         if (!checkStoredResult(string, token)) {
+printf( "!isStoredResult, string: %s, token: %s\n", string, token );
             fprintf(stderr, "error: argument not found\n");
             exit(-1);
         }
+else
+printf( "isStoredResult, string: \"%s\", token: \"%s\"\n", string, token );
     }
 
     if ( strstr( token, "log" ) ) {
